@@ -12,11 +12,13 @@ Images, Targets = olivetti.data, olivetti.target
 
 dim = Images.shape
 print "DIMENSION:", dim
+output = open("test.out", "w")
+output.write("Epoch,Error")
 for i in range(1000):  
   imageData = ImageData(Images, Targets, 64, 64, outputs = 1)
   imageData.train_all_data(0.25)
 
   testNet = Network(imageData, 64, "Softmax")
-  testNet.init_backprop_trainer()
+  testNet.init_backprop_trainer(verbose=False)
   error = testNet.run_network(i)
-  print "Error with", i, "epochs:", error
+  output.write(str(i) + "," + str(error))
