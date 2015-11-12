@@ -23,6 +23,9 @@ def build_feed_forward():
   network.sortModules()
   return network
 
+def build_recurrent():
+    
+
 #DEFINE LAYER FUNCTIONS
 def make_linear_layer(dim=1):
   return structure.LinearLayer(dim)

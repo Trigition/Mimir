@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import abc
+import numpy as np
 from pybrain.datasets            import ClassificationDataSet
 from pybrain.utilities           import percentError
 from pybrain.tools.shortcuts     import buildNetwork
@@ -13,34 +14,58 @@ class Data:
   __metaclass__ = abc.ABCMeta
   data_unit = None
   description = None
+  classifier = None
+  outputs = 1
 
-  def __init__(self, data, description=None):
+  test_data = None
+  train_data = None
+
+  def __init__(self, data, description=None, outputs=1):
     self.data_unit = data
     self.description = description
+    self.outputs = outputs
 
   @abc.abstractmethod
-  def print_data():
+  def print_data(self):
     """This method should be overriden to print out the data contained
     within the class"""
     return
-    
+  
+  #Returns with Test Data, Train Data
+  def train_all_data(self, train_data_ratio, expand=False):
+      self.test_data, self.train_data = self.classifier.splitWithProportion(train_data_ratio)
+      if expand:
+          self.test_data._convertToOneOfMany()
+          self.train_data._convertToOneOfMany()
+
+  def get_test_train(self):
+      return (self.test_data, self.train_data)
+
 class ImageData(Data):
   
-  def print_data():
+  image_x = 1
+  image_y = 1
+  images = []
+  targets = []
+
+  def __init__(self, description="Image Data", images, targets, image_x, image_y, outputs=1):
+      Data.__init__(self, description, outputs)
+      self.images = images
+      self.targets = targets
+      self.images_x = image_x
+      self.images_y = image_y
+
+  def create_classifier(self):
+      vector_length = self.image_x * self.image_y
+      #Create the classifier
+      self.classifier = ClassificationDataSet(vector_length, self.outputs, len(images))
+      for i in xrange(len(images)):
+          #Assign images to their targets in the classifier
+          self.classifier.addSample(np.ravel(self.images[i]), targets[i])
+
+  def print_data(self):
     print "Image Object:" + str(this.data_unit)
-
-  def add_image():
-
-class ClassificationSet():
-  in_dimension = 1
-  out_dimension = 1
-  n_classes = 1
-  class_data_set = None
-
-  def __init__(self, in_dimension, out_dimension, n_classes):
-    self.in_dimension = in_dimension
-    self.out_dimension = out_dimension
-    self.n_classes = n_classes
-
-  def init_class_data_set(self):
-    self.class_data_set = ClassificationDataSet(in_dimension, out_dimension, n_classes)
+    
+  def add_image(self, image, target):
+    self.images.append(image)
+    self.targets.append(target)
