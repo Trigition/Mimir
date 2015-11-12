@@ -1,4 +1,9 @@
-from pybrain import structure
+from pybrain.structure.modules import LinearLayer
+from pybrain.structure.modules import SigmoidLayer
+from pybrain.structure.modules import GaussianLayer
+from pybrain.structure.modules import MDLSTMLayer
+from pybrain.structure.modules import SoftmaxLayer
+from pybrain.structure.modules import TanhLayer
 
 def build_feed_forward():
   built_layers = []
@@ -24,27 +29,18 @@ def build_feed_forward():
   return network
 
 def build_recurrent():
-    
+  print "IMPLEMENT!"   
 
 #DEFINE LAYER FUNCTIONS
-def make_linear_layer(dim=1):
-  return structure.LinearLayer(dim)
-
-def make_sigmoid_layer(dim=1):
-  return structure.SigmoidLayer(dim)
-
-def make_gauss_layer(dim=1):
-  return structure.GaussianLayer(dim)
-
-def make_MDLSTM_layer(dim=1):
-  return structure.MDLSTMLayer(dim)
-
-def make_softmax_layer(dim=1):
-  return structure.SoftmaxLayer(dim)
-
-def make_tanh_layer(dim=1):
-  return structure.TanhLayer(dim)
-
+layers = {
+  "Linear" : LinearLayer,
+  "Sigmoid" : SigmoidLayer,
+  "Guassian" : GaussianLayer,
+  "MDLSTML" : MDLSTMLayer,
+  "Softmax" : SoftmaxLayer,
+  "Tanh" : TanhLayer
+  }
 network_options = {
 "feedforward" : build_feed_forward
 }
+
