@@ -1,5 +1,9 @@
 #!/usr/bin/env python
-
+"""
+Author: William Fong
+Version: Alpha 0.05
+Networks.py holds classes for managing networks on a layer basis.
+"""
 #Import PyBrain's Neural Network Structures
 from pybrain import structure
 from pybrain.tools.shortcuts import buildNetwork
